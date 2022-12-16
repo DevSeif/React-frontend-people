@@ -1,0 +1,42 @@
+﻿@model CountryViewModel
+
+@{
+    ViewData["Title"] = "Countries";
+}
+
+@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+{
+    <div class="text-center">
+        <form asp-action="Create" method="post">
+            <input type="text" name="CountryName" placeholder="Country name">
+            <input type="submit" value="Add country" class="btn btn-primary">
+        </form>
+    </div>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Country
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.countries)
+        {
+            <tr>
+                <td>
+                    @item.CountryName
+                </td>
+                <td>
+                    <a asp-action="EditPage" asp-controller="Country" asp-route-id=@item.CountryId class="btn btn-primary">Edit</a>
+                </td>
+                <td>
+                    <a asp-action="Delete" asp-controller="Country" asp-route-id=@item.CountryId class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
