@@ -1,22 +1,9 @@
 import React from "react";
-import axios from "axios";
 import { DetailsButton } from "./DetailsButton";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-export default function PersonList() {
-  const [people, setPeople] = useState([]);
+export default function PersonList(props) {
   const [sort, setSort] = useState(false);
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  function fetchData() {
-    axios.get(`https://localhost:7035/api/react`).then((result) => {
-      console.log("Executed fetchData");
-      setPeople(result.data);
-    });
-  }
 
   return (
     <div>
@@ -24,7 +11,7 @@ export default function PersonList() {
         className="btn btn-danger my-3"
         onClick={() => {
           setSort(!sort);
-          fetchData();
+          props.onButtonClick()
         }}
       >
         Sort people by name
@@ -38,7 +25,7 @@ export default function PersonList() {
         </thead>
         <tbody>
           {sort
-            ? people
+            ? props.myPeople
                 .sort((a, b) => a.name.localeCompare(b.name))
                 .map((person) => (
                   <tr>
@@ -46,18 +33,18 @@ export default function PersonList() {
                     <td>
                       <DetailsButton
                         myperson={person}
-                        onButtonClick={fetchData}
+                        onButtonClick={props.onButtonClick}
                       />
                     </td>
                   </tr>
                 ))
-            : people.map((person) => (
+            : props.myPeople.map((person) => (
                 <tr>
                   <td key={person.personId}>{person.name}</td>
                   <td>
                     <DetailsButton
                       myperson={person}
-                      onButtonClick={fetchData}
+                      onButtonClick={props.onButtonClick}
                     />
                   </td>
                 </tr>

@@ -39,6 +39,7 @@ export default class CreatePerson extends React.Component {
       .post(`https://localhost:7035/api/react/create`, person)
       .then((result) =>{
         console.log(result.status);
+        this.props.onButtonClick()
       
       });
     }
@@ -46,7 +47,6 @@ export default class CreatePerson extends React.Component {
 
   componentDidMount() {
     axios.get(`https://localhost:7035/api/react/countries`).then((result) => {
-      console.log(result.data);
       this.setState({ countries: result.data });
     });
   }
@@ -54,7 +54,6 @@ export default class CreatePerson extends React.Component {
   getCities = (arg) => {
     this.setState({ city: 0});
     this.setState({ country: arg.target.value });
-    console.log(arg.target.value);
     axios
       .get(`https://localhost:7035/api/react/cities/` + arg.target.value)
       .then((result) => {
